@@ -16,7 +16,8 @@ public abstract class ArithmeticOperation extends NumberOperation
 
         try {
             y = popInputNumber(p_calculator);
-        } catch (InsufficientParametersException ex) {
+        }
+        catch (InsufficientParametersException ex) {
             p_calculator.push(x);
             throw ex;
         }

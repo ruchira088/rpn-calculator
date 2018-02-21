@@ -34,8 +34,6 @@ public enum Operator implements CalculatorInput
         return m_label;
     }
 
-
-
     @Override
     public boolean isOperator()
     {
