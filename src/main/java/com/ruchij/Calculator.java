@@ -1,5 +1,6 @@
 package com.ruchij;
 
+import com.ruchij.exceptions.InputParseException;
 import com.ruchij.exceptions.InsufficientParametersException;
 import com.ruchij.operations.Operator;
 
@@ -20,11 +21,18 @@ public class Calculator
         m_history = p_history;
     }
 
-    public void inputPush(CalculatorInput p_calculatorInput) throws InsufficientParametersException
-    {
-        Calculator current = clone();
-        push(p_calculatorInput);
-        m_history.push(current);
+    public void input(String p_input) throws InputParseException, InsufficientParametersException {
+        InputParser inputParser = new InputParser();
+
+        for (CalculatorInput input : inputParser.parse(p_input)) {
+            Calculator current = clone();
+            push(input);
+
+            if (input != Operator.UNDO) {
+                m_history.push(current);
+            }
+
+        }
     }
 
     public void push(CalculatorInput p_calculatorInput) throws InsufficientParametersException
