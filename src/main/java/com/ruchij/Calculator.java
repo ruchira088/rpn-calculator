@@ -29,13 +29,11 @@ public class Calculator
                     "operator " + operator.getLabel() + " (position: " + offset + "): insufficient parameters"
             );
         }
-
     }
 
     private void pushAll(LinkedList<CalculatorInput> p_calculatorInputs) throws InsufficientParametersException
     {
-        for (CalculatorInput input : p_calculatorInputs)
-        {
+        for (CalculatorInput input : p_calculatorInputs) {
             m_inputHistory.add(input);
             push(input);
         }
@@ -46,8 +44,8 @@ public class Calculator
         if (p_calculatorInput.isOperator()) {
             Operator operator = (Operator) p_calculatorInput;
             operator.perform(this);
-
-        } else {
+        }
+        else {
             m_currentStack.push((InputNumber) p_calculatorInput);
         }
     }

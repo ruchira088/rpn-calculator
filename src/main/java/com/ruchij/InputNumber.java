@@ -25,8 +25,7 @@ public class InputNumber extends BigDecimal implements CalculatorInput
     {
         String string = super.toPlainString();
 
-        if (scale() >= 1)
-        {
+        if (scale() >= 1) {
             BigDecimal bigDecimal = new BigDecimal(string);
             string = bigDecimal.setScale(10, RoundingMode.DOWN).stripTrailingZeros().toPlainString();
         }

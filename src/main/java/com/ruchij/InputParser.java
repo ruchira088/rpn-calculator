@@ -20,7 +20,8 @@ public class InputParser
     {
         try {
             return Optional.of(new InputNumber(p_number));
-        } catch (NumberFormatException numberFormatException) {
+        }
+        catch (NumberFormatException numberFormatException) {
             return Optional.empty();
         }
     }
@@ -32,7 +33,8 @@ public class InputParser
 
         if (number.isPresent()) {
             input = number.get();
-        } else {
+        }
+        else {
             Optional<Operator> operator = parseOperator(p_input);
 
             if (operator.isPresent()) {
