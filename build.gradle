@@ -2,9 +2,6 @@ group 'airwallex'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
-apply plugin: 'application'
-
-mainClassName = "com.ruchij.App"
 
 sourceCompatibility = 1.8
 
