@@ -1,5 +1,5 @@
 # RPN Calculator
-command-line based RPN calculator.
+Command-line based RPN calculator.
 
 ## Running the application
 
