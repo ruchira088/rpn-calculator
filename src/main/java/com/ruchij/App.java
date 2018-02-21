@@ -1,12 +1,22 @@
 package com.ruchij;
 
+import java.util.Scanner;
+
 public class App
 {
     public static void main(String[] args) throws Exception
     {
         Calculator calculator = new Calculator();
 
-        calculator.input("5 1 + undo undo");
-        System.out.println(calculator);
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter input");
+
+        while (scanner.hasNextLine()) {
+            String input = scanner.nextLine();
+            calculator.input(input);
+
+            System.out.println(calculator.result());
+        }
     }
 }

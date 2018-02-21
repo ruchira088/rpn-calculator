@@ -9,29 +9,35 @@ import java.util.Stack;
 
 public class Calculator
 {
-    private Stack<CalculatorInput> m_currentStack;
-    private LinkedList<Calculator> m_history;
+    private Stack<InputNumber> m_currentStack = new Stack<>();
+    private LinkedList<CalculatorInput> m_inputHistory = new LinkedList<>();
+    private InsufficientParametersException m_warning = null;
 
-    Calculator() {
-        this(new Stack<>(), new LinkedList<>());
-    }
-
-    private Calculator(Stack<CalculatorInput> p_currentStack, LinkedList<Calculator> p_history) {
-        m_currentStack = p_currentStack;
-        m_history = p_history;
-    }
-
-    public void input(String p_input) throws InputParseException, InsufficientParametersException {
+    public void input(String p_input) throws InputParseException
+    {
         InputParser inputParser = new InputParser();
+        int currentStackLength = m_inputHistory.size();
 
-        for (CalculatorInput input : inputParser.parse(p_input)) {
-            Calculator current = clone();
+        try {
+            pushAll(inputParser.parse(p_input));
+        } catch (InsufficientParametersException exception)
+        {
+            int offset = 2 * (m_inputHistory.size() - currentStackLength) - 1;
+            Operator operator = (Operator) m_inputHistory.getLast();
+
+            m_warning = new InsufficientParametersException(
+                    "operator " + operator.getLabel() + " (position: " + offset + "): insufficient parameters"
+            );
+        }
+
+    }
+
+    private void pushAll(LinkedList<CalculatorInput> p_calculatorInputs) throws InsufficientParametersException
+    {
+        for (CalculatorInput input : p_calculatorInputs)
+        {
+            m_inputHistory.add(input);
             push(input);
-
-            if (input != Operator.UNDO) {
-                m_history.push(current);
-            }
-
         }
     }
 
@@ -42,41 +48,48 @@ public class Calculator
             operator.perform(this);
 
         } else {
-            m_currentStack.push(p_calculatorInput);
+            m_currentStack.push((InputNumber) p_calculatorInput);
         }
     }
 
-    public CalculatorInput pop() {
+    public CalculatorInput pop()
+    {
         return m_currentStack.pop();
     }
 
-    public Calculator clear() {
-        m_history.push(clone());
+    public Calculator clear()
+    {
+        m_currentStack = new Stack<>();
+        return this;
+    }
+
+    public Calculator undo() throws InsufficientParametersException
+    {
         m_currentStack = new Stack<>();
 
+        m_inputHistory.removeLast();
+        m_inputHistory.removeLast();
+
+        LinkedList<CalculatorInput> input = (LinkedList<CalculatorInput>)  m_inputHistory.clone();
+
+        m_inputHistory = new LinkedList<>();
+        pushAll(input);
+
         return this;
     }
 
-    public Calculator undo() {
-        Calculator undoCalculator = m_history.pop();
+    public String result()
+    {
+        String string = m_currentStack.toString()
+                .replace("[", "")
+                .replace("]", "")
+                .replaceAll(",", "");
 
-        m_currentStack = undoCalculator.m_currentStack;
-        m_history = undoCalculator.m_history;
+        if (m_warning != null) {
+            string = m_warning.getMessage() + "\n" + string;
+            m_warning = null;
+        }
 
-        return this;
-    }
-
-    public Calculator clone() {
-        return new Calculator(
-                (Stack<CalculatorInput>) m_currentStack.clone(),
-                (LinkedList<Calculator>)  m_history.clone()
-        );
-    }
-
-    @Override
-    public String toString() {
-        return "Calculator{" +
-                "m_stack=" + m_currentStack +
-                '}';
+        return string;
     }
 }

@@ -9,14 +9,14 @@ import java.util.Optional;
 
 public class InputParser
 {
-    public Optional<Operator> parseOperator(String p_label)
+    Optional<Operator> parseOperator(String p_label)
     {
         return Arrays.stream(Operator.values())
                 .filter(operator -> operator.getLabel().equalsIgnoreCase(p_label))
                 .findAny();
     }
 
-    public Optional<InputNumber> parseNumber(String p_number)
+    Optional<InputNumber> parseNumber(String p_number)
     {
         try {
             return Optional.of(new InputNumber(p_number));
@@ -25,7 +25,7 @@ public class InputParser
         }
     }
 
-    public CalculatorInput parseValue(String p_input) throws InputParseException
+    CalculatorInput parseValue(String p_input) throws InputParseException
     {
         CalculatorInput input = null;
         Optional<InputNumber> number = parseNumber(p_input);
@@ -51,7 +51,7 @@ public class InputParser
         LinkedList<CalculatorInput> linkedList = new LinkedList<>();
 
         for (String input : inputs) {
-            linkedList.add(parseValue(input));
+            linkedList.add(parseValue(input.trim()));
         }
 
         return linkedList;

@@ -3,10 +3,7 @@ package com.ruchij.operations;
 import com.ruchij.Calculator;
 import com.ruchij.CalculatorInput;
 import com.ruchij.exceptions.InsufficientParametersException;
-import com.ruchij.operations.arithmatic.AddOperation;
-import com.ruchij.operations.arithmatic.DivideOperation;
-import com.ruchij.operations.arithmatic.MultiplyOperation;
-import com.ruchij.operations.arithmatic.SubtractOperation;
+import com.ruchij.operations.numbers.*;
 
 public enum Operator implements CalculatorInput
 {
@@ -27,16 +24,26 @@ public enum Operator implements CalculatorInput
         m_calculatorOperation = p_calculatorOperation;
     }
 
-    public void perform(Calculator p_calculator) throws InsufficientParametersException {
+    public void perform(Calculator p_calculator) throws InsufficientParametersException
+    {
         m_calculatorOperation.perform(p_calculator);
     }
 
-    public String getLabel() {
+    public String getLabel()
+    {
         return m_label;
     }
 
+
+
     @Override
-    public boolean isOperator() {
+    public boolean isOperator()
+    {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return getLabel();
     }
 }
