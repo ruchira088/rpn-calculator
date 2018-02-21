@@ -57,13 +57,12 @@ public class Calculator
         return m_currentStack.pop();
     }
 
-    public Calculator clear()
+    public void clear()
     {
         m_currentStack = new Stack<>();
-        return this;
     }
 
-    public Calculator undo() throws InsufficientParametersException
+    public void undo() throws InsufficientParametersException
     {
         m_currentStack = new Stack<>();
 
@@ -74,8 +73,6 @@ public class Calculator
 
         m_inputHistory = new LinkedList<>();
         pushAll(input);
-
-        return this;
     }
 
     public String result()
